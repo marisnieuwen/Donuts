@@ -2,6 +2,8 @@
 
 Game demo using PixiJS, MatterJS with Typescript in OOP. The project is compiled using Parcel. 
 
+[Try the demo here](https://kokodoko.github.io/piximatters/)
+
 ![screen](./src/images/screen.png)
 
 <br>
