@@ -96,6 +96,17 @@ Matter.Body.setVelocity(this.rigidBody, { x: 10, y: 10 })
 this.rigidBody = Matter.Bodies.rectangle(450, 480, 900, 100, { isStatic: true, label:"Ground" })
 ```
 
+If your object only has to move through player interaction (a player character), then you can set `inertia` to false.
+
+```typescript
+ const playerOptions: Matter.IBodyDefinition = {
+    inertia: Infinity,
+    inverseInertia: Infinity,
+    label: "Player"
+}
+this.rigidBody = Matter.Bodies.rectangle(600, 230, 75, 100, playerOptions)
+```
+
 <br>
 <br>
 <br>
