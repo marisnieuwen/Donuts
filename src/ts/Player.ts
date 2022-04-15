@@ -1,23 +1,19 @@
 import * as PIXI from "pixi.js"
-import playerImage from "../images/mario.png"
 import { Game } from "./Game"
 import Matter from 'matter-js'
-import jumpSoundFile from "url:../sound/jump.mp3"
 
-export class Player {
+export class Player extends PIXI.Sprite {
 
     id: number
-    sprite: PIXI.Sprite
     rigidBody: Matter.Body
     speed: number = 0
     jumpSound:HTMLAudioElement
     game: Game
 
-    constructor(game: Game) {
+    constructor(texture: PIXI.Texture, game: Game) {
+        super(texture)
         this.game = game
-
-        this.sprite = PIXI.Sprite.from(playerImage)
-        this.sprite.anchor.set(0.5)
+        this.anchor.set(0.5)
 
         const playerOptions: Matter.IBodyDefinition = {
             density: 0.001,
@@ -31,13 +27,13 @@ export class Player {
         }
 
         this.rigidBody = Matter.Bodies.rectangle(600, 230, 75, 100, playerOptions)
+        Matter.Composite.add(game.engine.world, this.rigidBody)
         this.id = this.rigidBody.id
-        this.game.addToWorld(this.sprite, this.rigidBody)
 
         window.addEventListener("keydown", (e: KeyboardEvent) => this.onKeyDown(e))
         window.addEventListener("keyup", (e: KeyboardEvent) => this.onKeyUp(e))
 
-        this.jumpSound = new Audio(jumpSoundFile)
+        this.jumpSound = game.pixi.loader.resources["jumpsound"].data!
     }
 
     update() {
@@ -48,9 +44,9 @@ export class Player {
             // Matter.Body.translate(this.physicsBox, { x: -10, y: 20 })
         }
 
-        this.sprite.x = this.rigidBody.position.x
-        this.sprite.y = this.rigidBody.position.y
-        this.sprite.rotation = this.rigidBody.angle // todo make sure rigidbody angle cannot change
+        this.x = this.rigidBody.position.x
+        this.y = this.rigidBody.position.y
+        this.rotation = this.rigidBody.angle // todo make sure rigidbody angle cannot change
 
         if (this.rigidBody.position.y > 500) this.resetPosition()
     }

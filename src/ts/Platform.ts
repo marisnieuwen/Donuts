@@ -1,26 +1,25 @@
 import * as PIXI from "pixi.js"
 import Matter from 'matter-js'
-import platformImage from "../images/platform.png"
 import { Game } from "./Game"
 
-export class Platform {
-    sprite: PIXI.Sprite
+export class Platform extends PIXI.Sprite {
+
     rigidBody: Matter.Body
     
-    constructor(game: Game) {
-        this.sprite = PIXI.Sprite.from(platformImage)
-        this.sprite.anchor.set(0.5)
+    constructor(texture: PIXI.Texture, game: Game) {
+        super(texture)
+        this.anchor.set(0.5)
 
         this.rigidBody = Matter.Bodies.rectangle(100, 250, 220, 50, { angle:0.2,  isStatic: true, label:"Platform" }) //x,y,w,h
-        game.addToWorld(this.sprite, this.rigidBody)
+        Matter.Composite.add(game.engine.world, this.rigidBody)
 
         // update just once to set the sprite
         this.update()
     }
 
     update() {
-        this.sprite.rotation = this.rigidBody.angle
-        this.sprite.x = this.rigidBody.position.x
-        this.sprite.y = this.rigidBody.position.y
+        this.rotation = this.rigidBody.angle
+        this.x = this.rigidBody.position.x
+        this.y = this.rigidBody.position.y
     }
 }

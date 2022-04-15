@@ -1,35 +1,31 @@
 import * as PIXI from "pixi.js"
 import Matter from 'matter-js'
-import coinImage from "../images/coin.png"
-import coinSoundFile from "url:../sound/coin.mp3"
 import { Game } from "./Game"
 
-export class Coin {
+export class Coin extends PIXI.Sprite {
 
     id:number
-    sprite: PIXI.Sprite
     rigidBody: Matter.Body
     coinSound:HTMLAudioElement
     game:Game
     
-    constructor(game: Game) {
+    constructor(texture: PIXI.Texture, game: Game) {
+        super(texture)
         this.game = game
 
-        this.sprite = PIXI.Sprite.from(coinImage)
-        this.sprite.anchor.set(0.5)
+        this.anchor.set(0.5)
 
         this.rigidBody = Matter.Bodies.circle(Math.random() * 900, -30, 30, { friction: 0.00001, restitution: 0.5, density: 0.001, label: "Coin" }) //x,y,radius
-        
+        Matter.Composite.add(game.engine.world, this.rigidBody)
         this.id = this.rigidBody.id
-        this.game.addToWorld(this.sprite, this.rigidBody)
-
-        this.coinSound = new Audio(coinSoundFile)
+        
+        this.coinSound = game.pixi.loader.resources["coinsound"].data!
     }
 
     update() {
-        this.sprite.x = this.rigidBody.position.x
-        this.sprite.y = this.rigidBody.position.y
-        this.sprite.rotation = this.rigidBody.angle
+        this.x = this.rigidBody.position.x
+        this.y = this.rigidBody.position.y
+        this.rotation = this.rigidBody.angle
 
         if (this.rigidBody.position.y > 500) this.game.removeElement(this)
     }

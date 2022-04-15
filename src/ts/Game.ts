@@ -1,6 +1,15 @@
 import "../css/styles.css"
 import Matter from 'matter-js'
 import * as PIXI from "pixi.js"
+
+import crateImage from "../images/crate.png"
+import coinImage from "../images/coin.png"
+import platformImage from "../images/platform.png"
+import groundImage from "../images/ground.png"
+import playerImage from "../images/mario.png"
+import jumpSoundFile from "url:../sound/jump.mp3"  
+import coinSoundFile from "url:../sound/coin.mp3" 
+
 import { Crate } from "./Crate"
 import { Coin } from "./Coin"
 import { Ground } from "./Ground"
@@ -21,29 +30,49 @@ export class Game {
         this.engine = Matter.Engine.create()
         Matter.Events.on(this.engine, 'collisionStart', (event) => this.onCollision(event))
 
-        // static platforms
-        let ground = new Ground(this)
-        let platform = new Platform(this)
+        this.pixi.loader
+            .add("crate", crateImage)
+            .add("coin", coinImage)
+            .add("platform", platformImage)
+            .add("ground", groundImage)
+            .add("player", playerImage)
+            .add("jumpsound", jumpSoundFile)
+            .add("coinsound", coinSoundFile)
 
-        this.elements.push(new Player(this))
-        
+        //this.pixi.loader.onProgress.add((p: PIXI.Loader) => this.showProgress(p))
+        //this.pixi.loader.onComplete.add(() => this.doneLoading())
+        this.pixi.loader.load(() => this.doneLoading())
+    }
+
+    doneLoading() {
+
+        // static platforms
+        let ground = new Ground(this.pixi.loader.resources["ground"].texture!, this)
+        this.pixi.stage.addChild(ground)
+
+        let platform = new Platform(this.pixi.loader.resources["platform"].texture!, this)
+        this.pixi.stage.addChild(platform)
+
+        let player = new Player(this.pixi.loader.resources["player"].texture!, this)
+        this.elements.push(player)
+        this.pixi.stage.addChild(player)
+
         // keep adding boxes and coins
         setInterval(() => {
-            if(this.elements.length%2 == 0 ) {
-                this.elements.push(new Crate(this))
+            
+            if (this.elements.length % 2 == 0) {
+                let crate = new Crate(this.pixi.loader.resources["crate"].texture!, this)
+                this.elements.push(crate)
+                this.pixi.stage.addChild(crate)
             } else {
-                this.elements.push(new Coin(this))
+                let coin = new Coin(this.pixi.loader.resources["coin"].texture!, this)
+                this.elements.push(coin)
+                this.pixi.stage.addChild(coin)
             }
         }, 2000)
 
         // start update loop
         this.pixi.ticker.add(() => this.update())
-    }
-
-    // add a sprite to the pixi canvas and its rigidbody to the physics simulation
-    addToWorld(sprite: PIXI.Sprite, physicsBox: Matter.Body) {
-        Matter.Composite.add(this.engine.world, physicsBox)
-        this.pixi.stage.addChild(sprite)
     }
 
     update() {
@@ -75,9 +104,9 @@ export class Game {
 
     removeElement(element: Crate | Coin | Player) {
         element.beforeUnload()
-        Matter.Composite.remove(this.engine.world, element.rigidBody)
-        this.pixi.stage.removeChild(element.sprite)
-        this.elements = this.elements.filter((el: Crate | Coin | Player) => el != element)
+        Matter.Composite.remove(this.engine.world, element.rigidBody)                           // stop physics simulation
+        this.pixi.stage.removeChild(element)                                                    // stop drawing on the canvas
+        this.elements = this.elements.filter((el: Crate | Coin | Player) => el != element)      // stop updating
         // console.log(`Removed id ${element.id}. Elements left: ${this.elements.length}`)
     }
     
