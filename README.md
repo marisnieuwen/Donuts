@@ -139,3 +139,13 @@ class Game {
 - [MatterJS](https://brm.io/matter-js/)
 - [MatterJS Live Demos](https://brm.io/matter-js/demo/)
 - [MatterJS API](https://brm.io/matter-js/docs/)
+
+<br>
+<br>
+<br>
+
+## PixiJS demos
+
+- [Space Shooter](https://github.com/KokoDoko/pixidust)
+- [Physics](https://github.com/KokoDoko/piximatters)
+- [Flappy Bird](https://github.com/KokoDoko/pixibird.git)
