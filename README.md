@@ -81,7 +81,7 @@ GAME.TS
 class Game {
     myfish:Fish
     doneLoading(){
-        this.myfish = new Fish(this.pixi.loader.resources["ground"].texture!, this)
+        this.myfish = new Fish(this.pixi.loader.resources["fish"].texture!, this)
         this.pixi.stage.addChild(myfish)
     }
     update(delta:number){
@@ -97,9 +97,9 @@ class Game {
 
 # Moving 
 
-Rigidbodies move because `forces` are applied to them (gravity or other forces). This results in a `velocity` (current movement) of the sprite. You can always check the velocity using `console.log(this.rigidBody.velocity)`
+Rigidbodies automatically move and bounce because `forces` are applied to them (*gravity, friction, bouncyness, and other forces*). This results in a `velocity` (*current movement*) of the sprite. You can always check the velocity using `console.log(this.rigidBody.velocity)`
 
-To move a physics sprite yourself, you can alter the forces that affect the rigidbody. You can also directly set the velocity of the rigidbody. 
+To move a physics sprite yourself, you can add a force that affects the rigidbody. You can also directly set the velocity of the rigidbody. 
 
 ```typescript
 // apply a upward force (jump)
@@ -115,7 +115,7 @@ Matter.Body.setVelocity(this.rigidBody, { x: 10, y: 10 })
 this.rigidBody = Matter.Bodies.rectangle(450, 480, 900, 100, { isStatic: true, label:"Ground" })
 ```
 
-If your object only has to move through player interaction (a player character), then you can set `inertia` to false.
+If your object only has to move through player interaction (*a player character*), then you can set `inertia` to false.
 
 ```typescript
  const playerOptions: Matter.IBodyDefinition = {
