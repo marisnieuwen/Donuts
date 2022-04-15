@@ -73,6 +73,25 @@ class Fish extends PIXI.Sprite {
 ```
 
 <br>
+
+Now you can add a `new Fish()` to your game!
+
+GAME.TS
+```typescript
+class Game {
+    myfish:Fish
+    doneLoading(){
+        this.myfish = new Fish(this.pixi.loader.resources["ground"].texture!, this)
+        this.pixi.stage.addChild(myfish)
+    }
+    update(delta:number){
+         Matter.Engine.update(this.engine, 1000 / 60)
+         myfish.update()
+    }
+}
+```
+
+<br>
 <br>
 <br>
 
