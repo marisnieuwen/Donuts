@@ -148,6 +148,16 @@ class Game {
 }
 ```
 
+### Finding the sprite that collided
+
+Collision detection returns only the `rigidBody` that collided, we have to find the sprite that uses this rigidbody:
+
+```typescript
+findSpriteWithRigidbody(rb: Matter.Body) {
+    return this.allSprites.find((sprite) => sprite.rigidBody === rb)
+}
+```
+
 <br>
 <br>
 <br>

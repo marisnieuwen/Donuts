@@ -4,7 +4,6 @@ import Matter from 'matter-js'
 
 export class Crate extends PIXI.Sprite {
 
-    id: number
     rigidBody: Matter.Body
     game:Game
     
@@ -16,8 +15,6 @@ export class Crate extends PIXI.Sprite {
 
         this.rigidBody = Matter.Bodies.rectangle(Math.random() * 900, -30, 60, 60, {label:"Crate"}) //x,y,w,h
         Matter.Composite.add(game.engine.world, this.rigidBody)
-
-        this.id = this.rigidBody.id
     }
 
     update() {

@@ -87,19 +87,19 @@ export class Game {
     onCollision(event: Matter.IEventCollision<Matter.Engine>) {
         let collision = event.pairs[0]
         let [bodyA, bodyB] = [collision.bodyA, collision.bodyB]
-        let element = undefined
         // console.log(`${bodyA.label} ${bodyA.id} hits ${bodyB.label} ${bodyA.id}`)
         if (bodyA.label === "Coin" && bodyB.label === "Player") {
-            element = this.findElementById(bodyA.id)
+            let element = this.findSpriteWithRigidbody(bodyA)
+            if (element) this.removeElement(element)
         }
         if (bodyA.label === "Player" && bodyB.label === "Coin") {
-            element = this.findElementById(bodyB.id)
+            let element = this.findSpriteWithRigidbody(bodyB)
+            if (element) this.removeElement(element)
         }
-        if (element) this.removeElement(element)
     } 
 
-    findElementById(id:number) {
-        return this.elements.find( (element) => element.id === id)
+    findSpriteWithRigidbody(rb: Matter.Body) {
+        return this.elements.find((element) => element.rigidBody === rb)
     }
 
     removeElement(element: Crate | Coin | Player) {

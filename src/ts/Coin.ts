@@ -4,7 +4,6 @@ import { Game } from "./Game"
 
 export class Coin extends PIXI.Sprite {
 
-    id:number
     rigidBody: Matter.Body
     coinSound:HTMLAudioElement
     game:Game
@@ -17,7 +16,6 @@ export class Coin extends PIXI.Sprite {
 
         this.rigidBody = Matter.Bodies.circle(Math.random() * 900, -30, 30, { friction: 0.00001, restitution: 0.5, density: 0.001, label: "Coin" }) //x,y,radius
         Matter.Composite.add(game.engine.world, this.rigidBody)
-        this.id = this.rigidBody.id
         
         this.coinSound = game.pixi.loader.resources["coinsound"].data!
     }

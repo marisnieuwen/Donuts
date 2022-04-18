@@ -4,7 +4,6 @@ import Matter from 'matter-js'
 
 export class Player extends PIXI.Sprite {
 
-    id: number
     rigidBody: Matter.Body
     speed: number = 0
     jumpSound:HTMLAudioElement
@@ -28,7 +27,6 @@ export class Player extends PIXI.Sprite {
 
         this.rigidBody = Matter.Bodies.rectangle(600, 230, 75, 100, playerOptions)
         Matter.Composite.add(game.engine.world, this.rigidBody)
-        this.id = this.rigidBody.id
 
         window.addEventListener("keydown", (e: KeyboardEvent) => this.onKeyDown(e))
         window.addEventListener("keyup", (e: KeyboardEvent) => this.onKeyUp(e))
