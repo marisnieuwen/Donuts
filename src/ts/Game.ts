@@ -70,7 +70,7 @@ export class Game {
                 this.pixi.stage.addChild(coin)
             }
         }, 2000)
-
+       
         // start update loop
         this.pixi.ticker.add(() => this.update())
     }

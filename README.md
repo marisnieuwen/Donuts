@@ -158,6 +158,47 @@ findSpriteWithRigidbody(rb: Matter.Body) {
 }
 ```
 
+If you want certain items (*for example coins in a mario game*) not to collide with each other (but still collide with other items in the game), then you can add a [Collision Filter](https://brm.io/matter-js/demo/#collisionFiltering)
+
+<br>
+<br>
+<br>
+
+# Hitbox
+
+By making the rigidbody a different size than the sprite, you can create a custom hitbox. When positioning the sprite, make sure to correct for the smaller hitbox.
+
+```typescript
+// FISH TEXTURE WIDTH x HEIGHT     = 60 X 60
+// SMALLER HITBOX WIDTH x HEIGHT   = 30 X 30
+this.rigidBody = Matter.Bodies.rectangle(15, 15, 30, 30, {label:"Fish"}) 
+// draw the sprite with 15 pixels offset
+this.x = this.rigidBody.position.x - 15
+this.y = this.rigidBody.position.y - 15
+```
+
+### Drawing the hitbox
+
+Just to be sure what's happening you can [draw your hitbox using Pixi's drawing code](https://pixijs.io/examples/#/graphics/simple.js). This example draws a rectangle hitbox:
+
+```typescript
+constructor(texture: PIXI.Texture, game:Game) {
+    let rigidBodyWidth = 60
+    let rigidBodyHeight = 60
+
+    this.rigidBody = Matter.Bodies.rectangle(Math.random() * 900, -30, rigidBodyWidth, rigidBodyHeight, {label:"Crate"}) //x,y,w,h
+    Matter.Composite.add(game.engine.world, this.rigidBody)
+
+    // draw a hitbox
+    let hitbox = new PIXI.Graphics()
+    hitbox.lineStyle(2, 0x33FF33, 1)
+    hitbox.drawRect(-30, -30, rigidBodyWidth, rigidBodyHeight) // x offset, y offset, width, height
+    this.addChild(hitbox)
+}
+```
+
+A hitbox can also be a circle. [Or you can create a *compound hitbox* out of several rigidbodies](https://brm.io/matter-js/docs/classes/Composite.html). [Finally there is the option of creating a hand-drawn hitbox with a physics editor.](https://www.codeandweb.com/physicseditor)
+
 <br>
 <br>
 <br>
@@ -165,9 +206,10 @@ findSpriteWithRigidbody(rb: Matter.Body) {
 # Links
 
 - [PixiJS](https://pixijs.io/guides/basics/getting-started.html)
-- [MatterJS](https://brm.io/matter-js/)
+- [Drawing](https://pixijs.io/examples/#/graphics/simple.js)
+- [MatterJS](https://brm.io/matter-js/) en [API](https://brm.io/matter-js/docs/)
 - [MatterJS Live Demos](https://brm.io/matter-js/demo/)
-- [MatterJS API](https://brm.io/matter-js/docs/)
+- [Collision Filters](https://brm.io/matter-js/demo/#collisionFiltering) and [documentation](https://brm.io/matter-js/docs/classes/Body.html#property_collisionFilter)
 
 <br>
 <br>
