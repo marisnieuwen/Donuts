@@ -183,16 +183,11 @@ Just to be sure what's happening you can [draw your hitbox using Pixi's drawing 
 
 ```typescript
 constructor(texture: PIXI.Texture, game:Game) {
-    let rigidBodyWidth = 60
-    let rigidBodyHeight = 60
-
-    this.rigidBody = Matter.Bodies.rectangle(Math.random() * 900, -30, rigidBodyWidth, rigidBodyHeight, {label:"Crate"}) //x,y,w,h
-    Matter.Composite.add(game.engine.world, this.rigidBody)
-
+    // ... your game code 
     // draw a hitbox
     let hitbox = new PIXI.Graphics()
     hitbox.lineStyle(2, 0x33FF33, 1)
-    hitbox.drawRect(-30, -30, rigidBodyWidth, rigidBodyHeight) // x offset, y offset, width, height
+    hitbox.drawRect(-30, -30, 60, 60) // x offset, y offset, width, height
     this.addChild(hitbox)
 }
 ```
