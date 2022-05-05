@@ -65,8 +65,7 @@ class Fish extends PIXI.Sprite {
         Matter.Composite.add(game.engine.world, this.rigidBody)
     }
     update() {
-        this.x = this.rigidBody.position.x
-        this.y = this.rigidBody.position.y
+        this.position.set(this.rigidBody.position.x, this.rigidBody.position.y)
         this.rotation = this.rigidBody.angle
     }
 }
@@ -166,25 +165,21 @@ If you want certain items (*for example coins in a mario game*) not to collide w
 
 # Hitbox
 
-By making the rigidbody a different size than the sprite, you can create a custom hitbox. When positioning the sprite, make sure to correct for the smaller hitbox.
+By making the rigidbody a different size than the sprite, you can create a custom hitbox. 
 
 ```typescript
-// FISH TEXTURE WIDTH x HEIGHT     = 60 X 60
-// SMALLER HITBOX WIDTH x HEIGHT   = 30 X 30
+// TEXTURE WIDTHxHEIGHT = 60 X 60 HITBOX WIDTHxHEIGHT = 30 X 30
 this.rigidBody = Matter.Bodies.rectangle(15, 15, 30, 30, {label:"Fish"}) 
 // draw the sprite with 15 pixels offset
-this.x = this.rigidBody.position.x - 15
-this.y = this.rigidBody.position.y - 15
+this.position.set(this.rigidBody.position.x - 15, this.rigidBody.position.y - 15)
 ```
 
 ### Drawing the hitbox
 
-Just to be sure what's happening you can [draw your hitbox using Pixi's drawing code](https://pixijs.io/examples/#/graphics/simple.js). This example draws a rectangle hitbox:
+Just to be sure what's happening you can [draw your hitbox using Pixi's drawing code](https://pixijs.io/examples/#/graphics/simple.js). 
 
 ```typescript
 constructor(texture: PIXI.Texture, game:Game) {
-    // ... your game code 
-    // draw a hitbox
     let hitbox = new PIXI.Graphics()
     hitbox.lineStyle(2, 0x33FF33, 1)
     hitbox.drawRect(-30, -30, 60, 60) // x offset, y offset, width, height
@@ -192,7 +187,7 @@ constructor(texture: PIXI.Texture, game:Game) {
 }
 ```
 
-A hitbox can also be a circle. [Or you can create a *compound hitbox* out of several rigidbodies](https://brm.io/matter-js/docs/classes/Composite.html). [Finally there is the option of creating a hand-drawn hitbox with a physics editor.](https://www.codeandweb.com/physicseditor)
+> ⚠️ A hitbox could also be a circle. [Or you can create a *compound hitbox* out of several rigidbodies](https://brm.io/matter-js/docs/classes/Composite.html). Finally there is the option of creating a [hand-drawn hitbox with a physics editor.](https://www.codeandweb.com/physicseditor)
 
 <br>
 <br>

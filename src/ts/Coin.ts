@@ -21,8 +21,7 @@ export class Coin extends PIXI.Sprite {
     }
 
     update() {
-        this.x = this.rigidBody.position.x
-        this.y = this.rigidBody.position.y
+        this.position.set(this.rigidBody.position.x, this.rigidBody.position.y)
         this.rotation = this.rigidBody.angle
 
         if (this.rigidBody.position.y > 500) this.game.removeElement(this)

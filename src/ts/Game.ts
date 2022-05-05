@@ -23,6 +23,8 @@ export class Game {
     elements: (Crate | Coin | Player)[] = []
 
     constructor() {
+        console.log("yoo")
+
         const container = document.getElementById("container")!
         this.pixi = new PIXI.Application({ width: 900, height: 500, backgroundColor:0x223388 })
         container.appendChild(this.pixi.view)
@@ -45,7 +47,6 @@ export class Game {
     }
 
     doneLoading() {
-
         // static platforms
         let ground = new Ground(this.pixi.loader.resources["ground"].texture!, this)
         this.pixi.stage.addChild(ground)

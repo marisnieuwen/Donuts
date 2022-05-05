@@ -1,6 +1,7 @@
 import * as PIXI from "pixi.js"
 import { Game } from "./Game"
 import Matter from 'matter-js'
+import { ObservablePoint } from "pixi.js"
 
 export class Crate extends PIXI.Sprite {
 
@@ -15,19 +16,10 @@ export class Crate extends PIXI.Sprite {
 
         this.rigidBody = Matter.Bodies.rectangle(Math.random() * 900, -30, 60, 60, {label:"Crate"}) //x,y,w,h
         Matter.Composite.add(game.engine.world, this.rigidBody)
-
-        // draw a hitbox - handy for debugging
-        /*
-        let hitbox = new PIXI.Graphics()
-        hitbox.lineStyle(2, 0x33FF33, 1)
-        hitbox.drawRect(-30, -30, 60, 60)
-        this.addChild(hitbox)
-        */
     }
 
-    update() {
-        this.x = this.rigidBody.position.x
-        this.y = this.rigidBody.position.y
+    update() {       
+        this.position.set(this.rigidBody.position.x, this.rigidBody.position.y)
         this.rotation = this.rigidBody.angle
        
         if (this.rigidBody.position.y > 500) this.game.removeElement(this)
