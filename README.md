@@ -195,11 +195,12 @@ constructor(texture: PIXI.Texture, game:Game) {
 
 # Links
 
-- [PixiJS](https://pixijs.io/guides/basics/getting-started.html)
-- [Drawing](https://pixijs.io/examples/#/graphics/simple.js)
+- [Codesandbox Demo PixiJS met MatterJS](https://codesandbox.io/s/physics-33br5s)
 - [MatterJS](https://brm.io/matter-js/) en [API](https://brm.io/matter-js/docs/)
 - [MatterJS Live Demos](https://brm.io/matter-js/demo/)
 - [Collision Filters](https://brm.io/matter-js/demo/#collisionFiltering) and [documentation](https://brm.io/matter-js/docs/classes/Body.html#property_collisionFilter)
+- [PixiJS](https://pixijs.io/guides/basics/getting-started.html)
+- [Drawing](https://pixijs.io/examples/#/graphics/simple.js)
 
 <br>
 <br>
@@ -208,5 +209,4 @@ constructor(texture: PIXI.Texture, game:Game) {
 ## PixiJS demos
 
 - [Space Shooter](https://github.com/KokoDoko/pixidust)
-- [Physics](https://github.com/KokoDoko/piximatters)
 - [Flappy Bird](https://github.com/KokoDoko/pixibird.git)
