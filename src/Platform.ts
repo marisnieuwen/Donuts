@@ -4,7 +4,7 @@ import { Game } from "./Game"
 
 export class Platform extends PIXI.Sprite {
 
-    rigidBody: Matter.Body
+    public rigidBody: Matter.Body
     
     constructor(texture: PIXI.Texture, game: Game) {
         super(texture)
@@ -17,7 +17,7 @@ export class Platform extends PIXI.Sprite {
         this.update()
     }
 
-    update() {
+    public update() {
         this.rotation = this.rigidBody.angle
         this.x = this.rigidBody.position.x
         this.y = this.rigidBody.position.y

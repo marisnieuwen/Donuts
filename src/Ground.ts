@@ -4,7 +4,7 @@ import Matter from 'matter-js'
 
 export class Ground extends PIXI.Sprite {
 
-    rigidBody: Matter.Body
+    public rigidBody: Matter.Body
     
     constructor(texture: PIXI.Texture, game: Game) {
         super(texture)
@@ -17,7 +17,7 @@ export class Ground extends PIXI.Sprite {
         this.update()
     }
 
-    update() {
+    public update() {
         this.x = this.rigidBody.position.x
         this.y = this.rigidBody.position.y
     }

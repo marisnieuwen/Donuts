@@ -16,7 +16,7 @@ import playerImage from "./images/player2.png"
 
 export class Game {
 
-    private pixi: PIXI.Application
+    public pixi: PIXI.Application
     public engine: Matter.Engine
     private interface : UI;
     private elements: (Stack | Donut | Player)[] = []
@@ -40,7 +40,7 @@ export class Game {
         this.pixi.loader.load(() => this.doneLoading())
     }
 
-    doneLoading() {
+    public doneLoading() {
 
         let ground = new Ground(this.pixi.loader.resources["ground"].texture!, this)
         this.pixi.stage.addChild(ground)
@@ -72,7 +72,7 @@ export class Game {
         this.pixi.ticker.add(() => this.update())
     }
 
-    update() {
+    public update() {
         Matter.Engine.update(this.engine, 1000 / 60)
 
         for (let el of this.elements) {
@@ -81,7 +81,7 @@ export class Game {
     }
 
 
-    onCollision(event: Matter.IEventCollision<Matter.Engine>) {
+    public onCollision(event: Matter.IEventCollision<Matter.Engine>) {
         let collision = event.pairs[0]
         let [bodyA, bodyB] = [collision.bodyA, collision.bodyB]
         if (bodyA.label === "Donut" && bodyB.label === "Player") {
@@ -96,11 +96,11 @@ export class Game {
         }
     } 
 
-    findSpriteWithRigidbody(rb: Matter.Body) {
+    public findSpriteWithRigidbody(rb: Matter.Body) {
         return this.elements.find((element) => element.rigidBody === rb)
     }
 
-    removeElement(element: Stack | Donut | Player) {
+    public removeElement(element: Stack | Donut | Player) {
         element.beforeUnload()
         Matter.Composite.remove(this.engine.world, element.rigidBody)                      
         this.pixi.stage.removeChild(element)                                                  

@@ -4,9 +4,9 @@ import Matter from 'matter-js'
 
 export class Player extends PIXI.Sprite {
 
-    rigidBody: Matter.Body
-    speed: number = 0
-    game: Game
+    public rigidBody: Matter.Body
+    private speed: number = 0
+    public game: Game
 
     constructor(texture: PIXI.Texture, game: Game) {
         super(texture)
@@ -32,12 +32,9 @@ export class Player extends PIXI.Sprite {
 
     }
 
-    update() {
+    public update() {
         if (this.speed != 0) {
-            // velocity
             Matter.Body.setVelocity(this.rigidBody, { x: this.speed, y: this.rigidBody.velocity.y })
-            // of translate
-            // Matter.Body.translate(this.physicsBox, { x: -10, y: 20 })
         }
 
         this.x = this.rigidBody.position.x
@@ -49,7 +46,7 @@ export class Player extends PIXI.Sprite {
 
     
 
-    onKeyDown(e: KeyboardEvent) {
+    private onKeyDown(e: KeyboardEvent) {
         if (e.key.toUpperCase() === "W" || e.key === "ArrowUp") {
             if (this.rigidBody.velocity.y > -0.4 && this.rigidBody.velocity.y < 0.4) {
                 Matter.Body.applyForce(this.rigidBody, { x: this.rigidBody.position.x, y: this.rigidBody.position.y }, { x: 0, y: -0.25 })
@@ -69,7 +66,7 @@ export class Player extends PIXI.Sprite {
         }
     }
 
-    onKeyUp(e: KeyboardEvent) {
+   private onKeyUp(e: KeyboardEvent) {
         switch (e.key.toUpperCase()) {
             case "A":
             case "D":
@@ -80,14 +77,13 @@ export class Player extends PIXI.Sprite {
         }
     }
 
-    // in case mario goes out of bounds
-    resetPosition() {
+    public resetPosition() {
         Matter.Body.setPosition(this.rigidBody, { x: 120, y: 30 })
         Matter.Body.setVelocity(this.rigidBody, { x: 0, y: 0 })
         Matter.Body.setAngularVelocity(this.rigidBody, 0)
     }
 
-    beforeUnload() {
+   public beforeUnload() {
 
     }
 }
