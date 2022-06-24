@@ -1,21 +1,18 @@
 {
     "compilerOptions": {
-        "strict": true,
-        "noImplicitAny": true,
-        "noImplicitThis": true,
-        "strictPropertyInitialization": false,
-        "module": "ES6",
-        "sourceMap": true,
-        "allowJs": true,
-        "allowSyntheticDefaultImports": true,
-        "moduleResolution": "node",
-        "lib": [
-            "es6",
-            "dom"
-        ]
-    },
-    "include": [
-        "./src/**/*",
-        "globals.d.ts"
-    ]
-}
+      "strict": true,
+      "module": "commonjs",
+      "jsx": "preserve",
+      "strictPropertyInitialization": false,
+      "esModuleInterop": true,
+      "sourceMap": true,
+      "allowJs": true,
+      "lib": [
+        "es6",
+        "dom"
+      ],
+      "target": "es6",
+      "rootDir": "src",
+      "moduleResolution": "node"
+    }
+  }
