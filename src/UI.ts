@@ -25,7 +25,7 @@ export class UI extends PIXI.Container {
         
     }
 
-    addScore(n:number) {
+    public addScore(n:number) {
         this.score += n;
         this.scoreField.text = `Score : ${this.score}`
     }
