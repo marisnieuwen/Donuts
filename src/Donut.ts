@@ -1,27 +1,27 @@
 import * as PIXI from "pixi.js"
-import { Game } from "./Game"
 import Matter from 'matter-js'
-import { ObservablePoint } from "pixi.js"
+import { Game } from "./Game"
 
-export class Crate extends PIXI.Sprite {
+export class Donut extends PIXI.Sprite {
 
     rigidBody: Matter.Body
     game:Game
     
-    constructor(texture: PIXI.Texture, game:Game) {
+    constructor(texture: PIXI.Texture, game: Game) {
         super(texture)
         this.game = game
 
-        this.anchor.set(0.5)   
+        this.anchor.set(0.5)
 
-        this.rigidBody = Matter.Bodies.rectangle(Math.random() * 900, -30, 60, 60, {label:"Crate"}) //x,y,w,h
+        this.rigidBody = Matter.Bodies.circle(Math.random() * 900, -30, 30, { friction: 0.00001, restitution: 0.5, density: 0.001, label: "Donut" }) //x,y,radius
         Matter.Composite.add(game.engine.world, this.rigidBody)
+        
     }
 
-    update() {       
+    update() {
         this.position.set(this.rigidBody.position.x, this.rigidBody.position.y)
         this.rotation = this.rigidBody.angle
-       
+
         if (this.rigidBody.position.y > 500) this.game.removeElement(this)
     }
 

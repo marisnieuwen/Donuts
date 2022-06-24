@@ -6,7 +6,6 @@ export class Player extends PIXI.Sprite {
 
     rigidBody: Matter.Body
     speed: number = 0
-    jumpSound:HTMLAudioElement
     game: Game
 
     constructor(texture: PIXI.Texture, game: Game) {
@@ -31,7 +30,6 @@ export class Player extends PIXI.Sprite {
         window.addEventListener("keydown", (e: KeyboardEvent) => this.onKeyDown(e))
         window.addEventListener("keyup", (e: KeyboardEvent) => this.onKeyUp(e))
 
-        this.jumpSound = game.pixi.loader.resources["jumpsound"].data!
     }
 
     update() {
@@ -44,7 +42,7 @@ export class Player extends PIXI.Sprite {
 
         this.x = this.rigidBody.position.x
         this.y = this.rigidBody.position.y
-        this.rotation = this.rigidBody.angle // todo make sure rigidbody angle cannot change
+        this.rotation = this.rigidBody.angle
 
         if (this.rigidBody.position.y > 500) this.resetPosition()
     }
@@ -52,24 +50,29 @@ export class Player extends PIXI.Sprite {
     
 
     onKeyDown(e: KeyboardEvent) {
-        if (e.key === " " || e.key === "ArrowUp") {
+        if (e.key.toUpperCase() === "W" || e.key === "ArrowUp") {
             if (this.rigidBody.velocity.y > -0.4 && this.rigidBody.velocity.y < 0.4) {
                 Matter.Body.applyForce(this.rigidBody, { x: this.rigidBody.position.x, y: this.rigidBody.position.y }, { x: 0, y: -0.25 })
-                this.jumpSound.play()
             }
         }
-        switch (e.key) {
-            case "ArrowLeft":
-                this.speed = -5
+        switch (e.key.toUpperCase()) {
+            case "A":
+            case "ARROWLEFT":
+                this.speed = -4
+                this.scale.set(1, 1)
                 break
-            case "ArrowRight":
-                this.speed = 5
+            case "D":
+            case "ARROWRIGHT":
+                this.speed = 4
+                this.scale.set(-1, 1)
                 break
         }
     }
 
     onKeyUp(e: KeyboardEvent) {
-        switch (e.key) {
+        switch (e.key.toUpperCase()) {
+            case "A":
+            case "D":
             case "ArrowLeft":
             case "ArrowRight":
                 this.speed = 0

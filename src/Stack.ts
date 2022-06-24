@@ -1,29 +1,27 @@
 import * as PIXI from "pixi.js"
-import Matter from 'matter-js'
 import { Game } from "./Game"
+import Matter from 'matter-js'
+import { ObservablePoint } from "pixi.js"
 
-export class Coin extends PIXI.Sprite {
+export class Stack extends PIXI.Sprite {
 
     rigidBody: Matter.Body
-    coinSound:HTMLAudioElement
     game:Game
     
-    constructor(texture: PIXI.Texture, game: Game) {
+    constructor(texture: PIXI.Texture, game:Game) {
         super(texture)
         this.game = game
 
-        this.anchor.set(0.5)
+        this.anchor.set(0.5)   
 
-        this.rigidBody = Matter.Bodies.circle(Math.random() * 900, -30, 30, { friction: 0.00001, restitution: 0.5, density: 0.001, label: "Coin" }) //x,y,radius
+        this.rigidBody = Matter.Bodies.rectangle(Math.random() * 900, -30, 60, 60, {label:"Stack"}) //x,y,w,h
         Matter.Composite.add(game.engine.world, this.rigidBody)
-        
-        this.coinSound = game.pixi.loader.resources["coinsound"].data!
     }
 
-    update() {
+    update() {       
         this.position.set(this.rigidBody.position.x, this.rigidBody.position.y)
         this.rotation = this.rigidBody.angle
-
+       
         if (this.rigidBody.position.y > 500) this.game.removeElement(this)
     }
 
@@ -34,6 +32,6 @@ export class Coin extends PIXI.Sprite {
     }
 
     beforeUnload() {
-        this.coinSound.play()
+
     }
 }
