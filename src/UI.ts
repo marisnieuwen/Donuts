@@ -7,6 +7,7 @@ export class UI extends PIXI.Container {
     public scoreField:PIXI.Text
     public score:number = 0;
 
+
     constructor(game:Game, texture: PIXI.Texture){
         super()
         this.game = game
@@ -22,6 +23,9 @@ export class UI extends PIXI.Container {
         this.addChild(this.scoreField)
         this.scoreField.x = 10
         this.scoreField.y = 10
+
+   
+
         
     }
 
@@ -29,4 +33,5 @@ export class UI extends PIXI.Container {
         this.score += n;
         this.scoreField.text = `Score : ${this.score}`
     }
+
 }

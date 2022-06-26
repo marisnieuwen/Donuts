@@ -18,13 +18,13 @@ export class Game {
 
     public pixi: PIXI.Application
     public engine: Matter.Engine
-    private interface : UI;
+    private interface : UI
     private elements: (Stack | Donut | Player)[] = []
 
-    constructor() {
 
+    constructor() {
         const container = document.getElementById("container")!
-        this.pixi = new PIXI.Application({ width: 900, height: 500, backgroundColor:0x93d4fe })
+        this.pixi = new PIXI.Application({ width: 900, height: 500, backgroundColor:0x93dfe })
         container.appendChild(this.pixi.view)
 
         this.engine = Matter.Engine.create()
@@ -78,6 +78,7 @@ export class Game {
         for (let el of this.elements) {
             el.update()
         }
+
     }
 
 

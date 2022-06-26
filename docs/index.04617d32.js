@@ -549,7 +549,7 @@ class Game {
         this.pixi = new _pixiJs.Application({
             width: 900,
             height: 500,
-            backgroundColor: 9688318
+            backgroundColor: 605694
         });
         container.appendChild(this.pixi.view);
         this.engine = _matterJsDefault.default.Engine.create();
@@ -618,7 +618,7 @@ class Game {
 }
 new Game();
 
-},{"matter-js":"2oYKU","pixi.js":"dsYej","./Stack":"2i5YS","./Donut":"8uyOl","./Ground":"gtzAU","./Platform":"1itDa","./Player":"8YLWx","./UI":"ef7dT","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./images/donutstack.png":"7GX0F","./images/donut.png":"7s8Jf","./images/platformMini.png":"kKjep","./images/ground2.png":"e7Xrf","./images/player2.png":"fM6jl"}],"2oYKU":[function(require,module,exports) {
+},{"matter-js":"2oYKU","pixi.js":"dsYej","./Stack":"2i5YS","./Donut":"8uyOl","./Ground":"gtzAU","./Platform":"1itDa","./Player":"8YLWx","./UI":"ef7dT","./images/donutstack.png":"7GX0F","./images/donut.png":"7s8Jf","./images/platformMini.png":"kKjep","./images/ground2.png":"e7Xrf","./images/player2.png":"fM6jl","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"2oYKU":[function(require,module,exports) {
 var global = arguments[3];
 /*!
  * matter-js 0.18.0 by @liabru
@@ -46291,8 +46291,7 @@ class Player extends _pixiJs.Sprite {
         );
     }
     update() {
-        if (this.speed != 0) // velocity
-        _matterJsDefault.default.Body.setVelocity(this.rigidBody, {
+        if (this.speed != 0) _matterJsDefault.default.Body.setVelocity(this.rigidBody, {
             x: this.speed,
             y: this.rigidBody.velocity.y
         });
@@ -46334,7 +46333,6 @@ class Player extends _pixiJs.Sprite {
                 break;
         }
     }
-    // in case mario goes out of bounds
     resetPosition() {
         _matterJsDefault.default.Body.setPosition(this.rigidBody, {
             x: 120,
