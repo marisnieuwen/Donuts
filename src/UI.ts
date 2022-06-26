@@ -19,7 +19,7 @@ export class UI extends PIXI.Container {
             fill: ['#010101']
         })
     
-        this.scoreField = new PIXI.Text(`Score : 0`, style)
+        this.scoreField = new PIXI.Text(`Donuts : 0`, style)
         this.addChild(this.scoreField)
         this.scoreField.x = 10
         this.scoreField.y = 10
@@ -31,7 +31,7 @@ export class UI extends PIXI.Container {
 
     public addScore(n:number) {
         this.score += n;
-        this.scoreField.text = `Score : ${this.score}`
+        this.scoreField.text = `Donuts : ${this.score}`
     }
 
 }

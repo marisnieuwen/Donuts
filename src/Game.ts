@@ -112,7 +112,7 @@ export class Game {
         this.doomClock-=delta
         let secondsLeft = Math.floor(this.doomClock / 60)
         if(this.doomClock <= 0) {
-            console.log("Doomsday has come!")
+            console.log("Time is up!")
             this.doomText.text = `Time is up`
             this.gameOver()
 
@@ -122,6 +122,7 @@ export class Game {
         }
     }
 
+    // work in progress, doesn't work right now
     private gameOver() {
         console.log("game over")
         this.pixi.stop()
@@ -129,10 +130,9 @@ export class Game {
         this.pixi.stage.addChild(this.gameOverButton)
     }
 
+    //work in progress, doesn't work right now
     public resetGame() {
-        // delete the game over button
         this.gameOverButton.destroy()
-        // restart pixi
         this.player.resetPosition()
         this.donut.resetPosition()
         this.stack.resetPosition()
