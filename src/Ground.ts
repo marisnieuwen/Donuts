@@ -17,7 +17,7 @@ export class Ground extends PIXI.Sprite {
         this.update()
     }
 
-    public update() {
+    private update() {
         this.x = this.rigidBody.position.x
         this.y = this.rigidBody.position.y
     }

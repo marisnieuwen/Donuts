@@ -123,7 +123,7 @@ export class Game {
     }
 
     // work in progress, doesn't work right now
-    private gameOver() {
+    public gameOver() {
         console.log("game over")
         this.pixi.stop()
         this.gameOverButton = new GameOverButton(this.pixi.loader.resources["startButtonTexture"].texture!, this)

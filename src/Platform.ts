@@ -17,7 +17,7 @@ export class Platform extends PIXI.Sprite {
         this.update()
     }
 
-    public update() {
+    private update() {
         this.rotation = this.rigidBody.angle
         this.x = this.rigidBody.position.x
         this.y = this.rigidBody.position.y
