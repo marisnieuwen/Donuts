@@ -55,12 +55,12 @@ export class Player extends PIXI.Sprite {
         switch (e.key.toUpperCase()) {
             case "A":
             case "ARROWLEFT":
-                this.speed = -5
+                this.speed = -6
                 this.scale.set(1, 1)
                 break
             case "D":
             case "ARROWRIGHT":
-                this.speed = 5
+                this.speed = 6
                 this.scale.set(-1, 1)
                 break
         }
