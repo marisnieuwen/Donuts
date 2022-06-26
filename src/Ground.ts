@@ -10,7 +10,7 @@ export class Ground extends PIXI.Sprite {
         super(texture)
         this.anchor.set(0.5)
 
-        this.rigidBody = Matter.Bodies.rectangle(450, 480, 900, 100, { isStatic: true, label:"Ground" }) //x,y,w,h
+        this.rigidBody = Matter.Bodies.rectangle(500, 650, 1000, 100, { isStatic: true, label:"Ground" }) //x,y,w,h
         Matter.Composite.add(game.engine.world, this.rigidBody)
 
         // update just once to set the sprite initial position

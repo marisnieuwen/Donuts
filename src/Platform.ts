@@ -10,7 +10,7 @@ export class Platform extends PIXI.Sprite {
         super(texture)
         this.anchor.set(0.5)
 
-        this.rigidBody = Matter.Bodies.rectangle(100, 250, 220, 50, { angle:0.2,  isStatic: true, label:"Platform" }) //x,y,w,h
+        this.rigidBody = Matter.Bodies.rectangle(100, 350, 220, 50, { angle:0.0,  isStatic: true, label:"Platform" }) //x,y,w,h
         Matter.Composite.add(game.engine.world, this.rigidBody)
 
         // update just once to set the sprite

@@ -14,7 +14,7 @@ export class Stack extends PIXI.Sprite {
 
         this.anchor.set(0.5)   
 
-        this.rigidBody = Matter.Bodies.rectangle(Math.random() * 900, -30, 60, 60, {label:"Stack"}) //x,y,w,h
+        this.rigidBody = Matter.Bodies.rectangle(Math.random() * 1000, -30, 60, 60, {label:"Stack"}) //x,y,w,h
         Matter.Composite.add(game.engine.world, this.rigidBody)
     }
 
@@ -22,7 +22,7 @@ export class Stack extends PIXI.Sprite {
         this.position.set(this.rigidBody.position.x, this.rigidBody.position.y)
         this.rotation = this.rigidBody.angle
        
-        if (this.rigidBody.position.y > 500) this.game.removeElement(this)
+        if (this.rigidBody.position.y > 650) this.game.removeElement(this)
     }
 
     public resetPosition() {

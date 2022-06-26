@@ -13,7 +13,7 @@ export class Donut extends PIXI.Sprite {
 
         this.anchor.set(0.5)
 
-        this.rigidBody = Matter.Bodies.circle(Math.random() * 900, -30, 30, { friction: 0.00001, restitution: 0.5, density: 0.001, label: "Donut" }) //x,y,radius
+        this.rigidBody = Matter.Bodies.circle(Math.random() * 1000, -30, 30, { friction: 0.00001, restitution: 0.05, density: 0.001, label: "Donut" }) //x,y,radius
         Matter.Composite.add(game.engine.world, this.rigidBody)
         
     }
@@ -22,7 +22,7 @@ export class Donut extends PIXI.Sprite {
         this.position.set(this.rigidBody.position.x, this.rigidBody.position.y)
         this.rotation = this.rigidBody.angle
 
-        if (this.rigidBody.position.y > 500) this.game.removeElement(this)
+        if (this.rigidBody.position.y > 570) this.game.removeElement(this)
     }
 
     public resetPosition() {

@@ -532,30 +532,36 @@ var _ground = require("./Ground");
 var _platform = require("./Platform");
 var _player = require("./Player");
 var _ui = require("./UI");
-var _donutstackPng = require("./images/donutstack.png");
-var _donutstackPngDefault = parcelHelpers.interopDefault(_donutstackPng);
+// import { StartButton } from './startButton'
+var _gameOver = require("./GameOver");
+var _applePng = require("./images/apple.png");
+var _applePngDefault = parcelHelpers.interopDefault(_applePng);
 var _donutPng = require("./images/donut.png");
 var _donutPngDefault = parcelHelpers.interopDefault(_donutPng);
 var _platformMiniPng = require("./images/platformMini.png");
 var _platformMiniPngDefault = parcelHelpers.interopDefault(_platformMiniPng);
-var _ground2Png = require("./images/ground2.png");
-var _ground2PngDefault = parcelHelpers.interopDefault(_ground2Png);
+var _ground3Png = require("./images/ground3.png");
+var _ground3PngDefault = parcelHelpers.interopDefault(_ground3Png);
 var _player2Png = require("./images/player2.png");
 var _player2PngDefault = parcelHelpers.interopDefault(_player2Png);
+var _startPng = require("./images/start.png");
+var _startPngDefault = parcelHelpers.interopDefault(_startPng);
 class Game {
+    // public startButton: StartButton
     constructor(){
         this.elements = [];
+        this.doomClock = 3600;
         const container = document.getElementById("container");
         this.pixi = new _pixiJs.Application({
-            width: 900,
-            height: 500,
-            backgroundColor: 605694
+            width: 1000,
+            height: 700,
+            backgroundColor: 9688318
         });
         container.appendChild(this.pixi.view);
         this.engine = _matterJsDefault.default.Engine.create();
         _matterJsDefault.default.Events.on(this.engine, 'collisionStart', (event)=>this.onCollision(event)
         );
-        this.pixi.loader.add("stack", _donutstackPngDefault.default).add("donut", _donutPngDefault.default).add("platform", _platformMiniPngDefault.default).add("ground", _ground2PngDefault.default).add("player", _player2PngDefault.default);
+        this.pixi.loader.add("stack", _applePngDefault.default).add("donut", _donutPngDefault.default).add("platform", _platformMiniPngDefault.default).add("ground", _ground3PngDefault.default).add("player", _player2PngDefault.default).add('startButtonTexture', _startPngDefault.default);
         this.pixi.loader.load(()=>this.doneLoading()
         );
     }
@@ -567,8 +573,15 @@ class Game {
         let player = new _player.Player(this.pixi.loader.resources["player"].texture, this);
         this.elements.push(player);
         this.pixi.stage.addChild(player);
+        this.doomText = new _pixiJs.Text(`Time left: `);
+        this.pixi.stage.addChild(this.doomText);
+        this.doomText.x = 550;
+        this.doomText.y = 10;
         this.interface = new _ui.UI();
         this.pixi.stage.addChild(this.interface);
+        // work in progress
+        // this.startButton = new StartButton(this.pixi.loader.resources["startButtonTexture"].texture!, this)
+        // this.pixi.stage.addChild(this.startButton) 
         setInterval(()=>{
             if (this.elements.length % 2 == 0) {
                 let stack = new _stack.Stack(this.pixi.loader.resources["stack"].texture, this);
@@ -580,12 +593,37 @@ class Game {
                 this.pixi.stage.addChild(donut);
             }
         }, 2000);
-        this.pixi.ticker.add(()=>this.update()
+        this.pixi.ticker.add((delta)=>this.update(delta)
         );
     }
-    update() {
+    update(delta) {
         _matterJsDefault.default.Engine.update(this.engine, 1000 / 60);
         for (let el of this.elements)el.update();
+        this.doomClock -= delta;
+        let secondsLeft = Math.floor(this.doomClock / 60);
+        if (this.doomClock <= 0) {
+            console.log("Doomsday has come!");
+            this.doomText.text = `Time is up`;
+            this.gameOver();
+        } else {
+            console.log(`Only ${secondsLeft} seconds left!`);
+            this.doomText.text = `You have ${secondsLeft} second left!`;
+        }
+    }
+    gameOver() {
+        console.log("game over");
+        this.pixi.stop();
+        this.gameOverButton = new _gameOver.GameOverButton(this.pixi.loader.resources["startButtonTexture"].texture, this);
+        this.pixi.stage.addChild(this.gameOverButton);
+    }
+    resetGame() {
+        // delete the game over button
+        this.gameOverButton.destroy();
+        // restart pixi
+        this.player.resetPosition();
+        this.donut.resetPosition();
+        this.stack.resetPosition();
+        this.pixi.start();
     }
     onCollision(event) {
         let collision = event.pairs[0];
@@ -618,7 +656,7 @@ class Game {
 }
 new Game();
 
-},{"matter-js":"2oYKU","pixi.js":"dsYej","./Stack":"2i5YS","./Donut":"8uyOl","./Ground":"gtzAU","./Platform":"1itDa","./Player":"8YLWx","./UI":"ef7dT","./images/donutstack.png":"7GX0F","./images/donut.png":"7s8Jf","./images/platformMini.png":"kKjep","./images/ground2.png":"e7Xrf","./images/player2.png":"fM6jl","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"2oYKU":[function(require,module,exports) {
+},{"matter-js":"2oYKU","pixi.js":"dsYej","./Stack":"2i5YS","./Donut":"8uyOl","./Ground":"gtzAU","./Platform":"1itDa","./Player":"8YLWx","./UI":"ef7dT","./images/donut.png":"7s8Jf","./images/platformMini.png":"kKjep","./images/player2.png":"fM6jl","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./images/ground3.png":"jM3Rg","./images/apple.png":"kKWsj","./GameOver":"4d3vU","./images/start.png":"lH8QQ"}],"2oYKU":[function(require,module,exports) {
 var global = arguments[3];
 /*!
  * matter-js 0.18.0 by @liabru
@@ -46135,7 +46173,7 @@ class Stack extends _pixiJs.Sprite {
         super(texture);
         this.game = game;
         this.anchor.set(0.5);
-        this.rigidBody = _matterJsDefault.default.Bodies.rectangle(Math.random() * 900, -30, 60, 60, {
+        this.rigidBody = _matterJsDefault.default.Bodies.rectangle(Math.random() * 1000, -30, 60, 60, {
             label: "Stack"
         }) //x,y,w,h
         ;
@@ -46144,7 +46182,7 @@ class Stack extends _pixiJs.Sprite {
     update() {
         this.position.set(this.rigidBody.position.x, this.rigidBody.position.y);
         this.rotation = this.rigidBody.angle;
-        if (this.rigidBody.position.y > 500) this.game.removeElement(this);
+        if (this.rigidBody.position.y > 650) this.game.removeElement(this);
     }
     resetPosition() {
         _matterJsDefault.default.Body.setPosition(this.rigidBody, {
@@ -46174,9 +46212,9 @@ class Donut extends _pixiJs.Sprite {
         super(texture);
         this.game = game;
         this.anchor.set(0.5);
-        this.rigidBody = _matterJsDefault.default.Bodies.circle(Math.random() * 900, -30, 30, {
+        this.rigidBody = _matterJsDefault.default.Bodies.circle(Math.random() * 1000, -30, 30, {
             friction: 0.00001,
-            restitution: 0.5,
+            restitution: 0.05,
             density: 0.001,
             label: "Donut"
         }) //x,y,radius
@@ -46186,7 +46224,7 @@ class Donut extends _pixiJs.Sprite {
     update() {
         this.position.set(this.rigidBody.position.x, this.rigidBody.position.y);
         this.rotation = this.rigidBody.angle;
-        if (this.rigidBody.position.y > 500) this.game.removeElement(this);
+        if (this.rigidBody.position.y > 570) this.game.removeElement(this);
     }
     resetPosition() {
         _matterJsDefault.default.Body.setPosition(this.rigidBody, {
@@ -46215,7 +46253,7 @@ class Ground extends _pixiJs.Sprite {
     constructor(texture, game){
         super(texture);
         this.anchor.set(0.5);
-        this.rigidBody = _matterJsDefault.default.Bodies.rectangle(450, 480, 900, 100, {
+        this.rigidBody = _matterJsDefault.default.Bodies.rectangle(500, 650, 1000, 100, {
             isStatic: true,
             label: "Ground"
         }) //x,y,w,h
@@ -46242,8 +46280,8 @@ class Platform extends _pixiJs.Sprite {
     constructor(texture, game){
         super(texture);
         this.anchor.set(0.5);
-        this.rigidBody = _matterJsDefault.default.Bodies.rectangle(100, 250, 220, 50, {
-            angle: 0.2,
+        this.rigidBody = _matterJsDefault.default.Bodies.rectangle(100, 350, 220, 50, {
+            angle: 0,
             isStatic: true,
             label: "Platform"
         }) //x,y,w,h
@@ -46298,7 +46336,7 @@ class Player extends _pixiJs.Sprite {
         this.x = this.rigidBody.position.x;
         this.y = this.rigidBody.position.y;
         this.rotation = this.rigidBody.angle;
-        if (this.rigidBody.position.y > 500) this.resetPosition();
+        if (this.rigidBody.position.y > 650) this.resetPosition();
     }
     onKeyDown(e) {
         if (e.key.toUpperCase() === "W" || e.key === "ArrowUp") {
@@ -46307,7 +46345,7 @@ class Player extends _pixiJs.Sprite {
                 y: this.rigidBody.position.y
             }, {
                 x: 0,
-                y: -0.25
+                y: -0.4
             });
         }
         switch(e.key.toUpperCase()){
@@ -46379,8 +46417,8 @@ class UI extends _pixiJs.Container {
     }
 }
 
-},{"pixi.js":"dsYej","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"7GX0F":[function(require,module,exports) {
-module.exports = require('./helpers/bundle-url').getBundleURL('jXrpa') + "donutstack.42eac7dc.png" + "?" + Date.now();
+},{"pixi.js":"dsYej","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"7s8Jf":[function(require,module,exports) {
+module.exports = require('./helpers/bundle-url').getBundleURL('jXrpa') + "donut.8d525e13.png" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"lgJ39"}],"lgJ39":[function(require,module,exports) {
 "use strict";
@@ -46417,17 +46455,44 @@ exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
 exports.getOrigin = getOrigin;
 
-},{}],"7s8Jf":[function(require,module,exports) {
-module.exports = require('./helpers/bundle-url').getBundleURL('jXrpa') + "donut.8d525e13.png" + "?" + Date.now();
-
-},{"./helpers/bundle-url":"lgJ39"}],"kKjep":[function(require,module,exports) {
+},{}],"kKjep":[function(require,module,exports) {
 module.exports = require('./helpers/bundle-url').getBundleURL('jXrpa') + "platformMini.8a1fb055.png" + "?" + Date.now();
-
-},{"./helpers/bundle-url":"lgJ39"}],"e7Xrf":[function(require,module,exports) {
-module.exports = require('./helpers/bundle-url').getBundleURL('jXrpa') + "ground2.425a5f44.png" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"lgJ39"}],"fM6jl":[function(require,module,exports) {
 module.exports = require('./helpers/bundle-url').getBundleURL('jXrpa') + "player2.c27596db.png" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"lgJ39"}],"jM3Rg":[function(require,module,exports) {
+module.exports = require('./helpers/bundle-url').getBundleURL('jXrpa') + "ground3.a2a1837f.png" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"lgJ39"}],"kKWsj":[function(require,module,exports) {
+module.exports = require('./helpers/bundle-url').getBundleURL('jXrpa') + "apple.c4e1877e.png" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"lgJ39"}],"4d3vU":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "GameOverButton", ()=>GameOverButton
+);
+var _pixiJs = require("pixi.js");
+class GameOverButton extends _pixiJs.Sprite {
+    constructor(texture, game){
+        super(texture);
+        this.game = game;
+        this.width = 338;
+        this.height = 85;
+        this.x = 350;
+        this.y = 100;
+        this.interactive = true;
+        this.buttonMode = true;
+        this.on('pointerdown', ()=>this.buttonClicked()
+        );
+    }
+    buttonClicked() {
+        this.game.resetGame();
+    }
+}
+
+},{"pixi.js":"dsYej","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"lH8QQ":[function(require,module,exports) {
+module.exports = require('./helpers/bundle-url').getBundleURL('jXrpa') + "start.bb81ca68.png" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"lgJ39"}]},["5EqNz","TyEjs"], "TyEjs", "parcelRequireb4d8")
 

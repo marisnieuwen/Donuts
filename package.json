@@ -8,6 +8,8 @@
     },
     "dependencies": {
         "matter-js": "^0.18.0",
+        "pixi-animationloop": "^1.0.9",
+        "pixi-timer": "^1.0.1",
         "pixi.js": "6.2.2"
     },
     "devDependencies": {

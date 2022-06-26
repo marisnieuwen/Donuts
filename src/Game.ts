@@ -6,25 +6,41 @@ import { Donut } from "./Donut"
 import { Ground } from "./Ground"
 import { Platform } from "./Platform"
 import { Player } from "./Player"
-import { UI } from "./UI";
+import { UI } from "./UI"
 
-import stackImage from "./images/donutstack.png"
+// import { StartButton } from './startButton'
+import { GameOverButton } from './GameOver'
+
+
+import stackImage from "./images/apple.png"
 import donutImage from "./images/donut.png"
 import platformImage from "./images/platformMini.png"
-import groundImage from "./images/ground2.png"
+import groundImage from "./images/ground3.png"
 import playerImage from "./images/player2.png"
+import startButton from "./images/start.png"
+
 
 export class Game {
-
     public pixi: PIXI.Application
     public engine: Matter.Engine
     private interface : UI
     private elements: (Stack | Donut | Player)[] = []
 
+    private player: Player
+    private donut: Donut
+    private stack: Stack
+
+    doomClock:number = 3600;
+    doomText: any
+
+    private gameOverButton: GameOverButton
+
+    // public startButton: StartButton
+
 
     constructor() {
         const container = document.getElementById("container")!
-        this.pixi = new PIXI.Application({ width: 900, height: 500, backgroundColor:0x93dfe })
+        this.pixi = new PIXI.Application({ width: 1000, height: 700, backgroundColor:0x93d4fe })
         container.appendChild(this.pixi.view)
 
         this.engine = Matter.Engine.create()
@@ -36,11 +52,12 @@ export class Game {
             .add("platform", platformImage)
             .add("ground", groundImage)
             .add("player", playerImage)
+            .add('startButtonTexture', startButton)
 
         this.pixi.loader.load(() => this.doneLoading())
     }
 
-    public doneLoading() {
+    private doneLoading() {
 
         let ground = new Ground(this.pixi.loader.resources["ground"].texture!, this)
         this.pixi.stage.addChild(ground)
@@ -52,8 +69,18 @@ export class Game {
         this.elements.push(player)
         this.pixi.stage.addChild(player)
 
+        this.doomText = new PIXI.Text(`Time left: `)
+        this.pixi.stage.addChild(this.doomText)
+        this.doomText.x = 550
+        this.doomText.y = 10
+
+
         this.interface = new UI();
         this.pixi.stage.addChild(this.interface);
+
+        // work in progress
+        // this.startButton = new StartButton(this.pixi.loader.resources["startButtonTexture"].texture!, this)
+        // this.pixi.stage.addChild(this.startButton) 
 
         setInterval(() => {
             
@@ -67,20 +94,50 @@ export class Game {
                 this.pixi.stage.addChild(donut)
             }
         }, 2000)
+
+        
        
 
-        this.pixi.ticker.add(() => this.update())
+        this.pixi.ticker.add((delta) => this.update(delta))
     }
 
-    public update() {
+
+    public update(delta:number) {
         Matter.Engine.update(this.engine, 1000 / 60)
 
         for (let el of this.elements) {
             el.update()
         }
 
+        this.doomClock-=delta
+        let secondsLeft = Math.floor(this.doomClock / 60)
+        if(this.doomClock <= 0) {
+            console.log("Doomsday has come!")
+            this.doomText.text = `Time is up`
+            this.gameOver()
+
+        } else {
+            console.log(`Only ${secondsLeft} seconds left!`)
+            this.doomText.text = `You have ${secondsLeft} second left!`
+        }
     }
 
+    private gameOver() {
+        console.log("game over")
+        this.pixi.stop()
+        this.gameOverButton = new GameOverButton(this.pixi.loader.resources["startButtonTexture"].texture!, this)
+        this.pixi.stage.addChild(this.gameOverButton)
+    }
+
+    public resetGame() {
+        // delete the game over button
+        this.gameOverButton.destroy()
+        // restart pixi
+        this.player.resetPosition()
+        this.donut.resetPosition()
+        this.stack.resetPosition()
+        this.pixi.start()
+    }
 
     public onCollision(event: Matter.IEventCollision<Matter.Engine>) {
         let collision = event.pairs[0]

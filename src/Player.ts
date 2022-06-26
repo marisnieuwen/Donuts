@@ -41,7 +41,7 @@ export class Player extends PIXI.Sprite {
         this.y = this.rigidBody.position.y
         this.rotation = this.rigidBody.angle
 
-        if (this.rigidBody.position.y > 500) this.resetPosition()
+        if (this.rigidBody.position.y > 650) this.resetPosition()
     }
 
     
@@ -49,7 +49,7 @@ export class Player extends PIXI.Sprite {
     private onKeyDown(e: KeyboardEvent) {
         if (e.key.toUpperCase() === "W" || e.key === "ArrowUp") {
             if (this.rigidBody.velocity.y > -0.4 && this.rigidBody.velocity.y < 0.4) {
-                Matter.Body.applyForce(this.rigidBody, { x: this.rigidBody.position.x, y: this.rigidBody.position.y }, { x: 0, y: -0.25 })
+                Matter.Body.applyForce(this.rigidBody, { x: this.rigidBody.position.x, y: this.rigidBody.position.y }, { x: 0, y: -0.4 })
             }
         }
         switch (e.key.toUpperCase()) {
